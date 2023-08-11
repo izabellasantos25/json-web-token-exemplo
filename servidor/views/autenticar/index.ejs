@@ -14,11 +14,12 @@
         <input type="text" placeholder="name"/>
         <input type="password" placeholder="pessword"/>
         <input type="text" placeholder="email address"/>
+        <p class="message">Already registered? <a href="#">Sign In</a></p>
       </form>
       <form method="post" action="/logar" class="login-form">
-        <input type="text" placeholder="E-mail"/>
-        <input type="password" placeholder="Senha"/>
-        <input type="submit" value="login">
+        <input type="text" placeholder="E-mail" name="usuario"/>
+        <input type="password" placeholder="Senha" name="senha"/>
+        <input type="submit" value="login"/>
         <p class="message">Não é registrado? <a href="#">Crie uma conta</a></p>
       </form>
     </div>
