@@ -38,13 +38,20 @@ app.get('/', async function(req, res){
 
 app.post('/logar', (req, res) => {
   if (req.body.usuario == "izabella" && req.body.senha == 2505) {
-    res.send("Voce está logado")
-  } else {
-    res.send("tente novamente")
-  }
- 
-})
+    const id = 2;
+    const token = jwt.sign({ id }, process.env.SECRET, {
+      expiresIn: 300
+    })
 
+    res.cookie('token', token, {httpOnly: true});
+    return res.json({
+      usuario: req.body.usuario, 
+      token: token
+    })
+  } 
+   res.status(500).json({mensagem: "login inválido"})
+})
+  
 app.post('/deslogar', function(req, res) {
   
 })
