@@ -34,12 +34,15 @@ app.get('/usuarios/cadastrar', async function(req, res){
 })
 
 app.post('/usuarios/cadastrar', async function(req, res){
-  if(req.body.senha === req.body.senhadois)
-  res.json({mensagem: "Cadastro realizado!"})
-else(
-  res.json({mensagem: "Senhas não são iguais!"})
- )
-
+  try {
+    if(req.body.senha == req.body.senhadois){
+      await usuario.create(req.body);
+      res.redirect('/usuarios/listar')
+    }
+} catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'As senhas não são iguais!' });
+}
 })
 
 app.get('/autenticar', async function(req, res){
@@ -79,7 +82,7 @@ app.post('/deslogar', function(req, res) {
 
 app.post('/usuarios/cadastrar', async function(req, res){
   try {
-    if(req.body.senha === req.body.senhadois)
+    if(req.body.senha == req.body.senhadois)
       await usuario.create(req.body);
       res.redirect('/usuarios/listar')
   } catch (err) {
@@ -89,8 +92,14 @@ app.post('/usuarios/cadastrar', async function(req, res){
 })
 
 app.get('/usuarios/listar', async function(req, res){
-  res.json('usuarios')
-})
+  try {
+   var usuarios = await usuario.findAll();
+   res.render('home', { usuarios });
+ } catch (err) {
+   console.error(err);
+   res.status(500).json({ message: 'Ocorreu um erro ao buscar os usuário.' });
+ }
+ })
 
 app.listen(3000, function() {
   console.log('App de Exemplo escutando na porta 3000!')
