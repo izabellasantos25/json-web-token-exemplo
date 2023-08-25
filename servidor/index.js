@@ -51,7 +51,7 @@ app.get('/', async function(req, res){
 })
 
 app.post('/logar', (req, res) => {
-  if(req.body.usuario == "kari" && req.body.senha == "123"){
+  if(req.body.usuario == "iza" && req.body.senha == "123"){
     const id = 1;
 
     const token = jwt.sign({ id }, process.env.SECRET, {
