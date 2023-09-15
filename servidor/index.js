@@ -3,6 +3,7 @@ require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');
 var { expressjwt: expressJWT } = require("express-jwt");
 const cors = require('cors');
+const crypto = require('./crypto');
 
 var cookieParser = require('cookie-parser')
 
@@ -31,18 +32,6 @@ app.use(
 app.get('/usuarios/cadastrar', async function(req, res){
   res.render('usuarios/cadastrar');
   
-})
-
-app.post('/usuarios/cadastrar', async function(req, res){
-  try {
-    if(req.body.senha == req.body.senhadois){
-      await usuario.create(req.body);
-      res.redirect('/usuarios/listar')
-    }
-} catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'As senhas não são iguais!' });
-}
 })
 
 app.get('/autenticar', async function(req, res){
@@ -82,10 +71,15 @@ app.post('/deslogar', function(req, res) {
 
 app.post('/usuarios/cadastrar', async function(req, res){
   try {
-    if(req.body.senha == req.body.senhadois)
-      await usuario.create(req.body);
+    const email = {
+      nome: req.body.nome,
+      senha: crypto.encrypt(req.body.senha)
+    }
+    if(req.body.senha == req.body.senhadois){
+     const novousu = await usuario.create(email);
       res.redirect('/usuarios/listar')
-  } catch (err) {
+  } 
+}   catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Ocorreu um erro ao criar o usuário.' });
   }
@@ -93,8 +87,8 @@ app.post('/usuarios/cadastrar', async function(req, res){
 
 app.get('/usuarios/listar', async function(req, res){
   try {
-   var usuarios = await usuario.findAll();
-   res.render('home', { usuarios });
+   var novousu = await usuario.findAll();
+   res.render('home', { novousu });
  } catch (err) {
    console.error(err);
    res.status(500).json({ message: 'Ocorreu um erro ao buscar os usuário.' });
