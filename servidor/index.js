@@ -42,23 +42,27 @@ app.get('/', async function(req, res){
   res.render("home")
 })
 
-app.post('/logar', (req, res) => {
-  if(req.body.usuario == "iza" && req.body.senha == "123"){
-    const id = 1;
+app.post('/logar', async function(req, res) {
+  try {
+    const { usuario: username, senha } = req.body;
+    const user = await usuario.findOne({ where: { nome: username } });
 
-    const token = jwt.sign({ id }, process.env.SECRET, {
-      expiresIn: 300
-    })
+    if (user && crypto.decrypt(user.senha) === senha) {
+      const token = jwt.sign({ id: user.id }, process.env.SECRET, {
+        expiresIn: 3000
+      });
 
-    res.cookie('token', token, {httpOnly: true});
-    return res.json({
-      usuario: req.body.usuario,
-      token: token
-    })
-  } 
-
-  res.status(500).json({ mensagem: "Login Inválido "})
-})
+      res.cookie('token', token, { httpOnly: true });
+      return res.json({
+        usuario: user.nome,
+        token: token
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erro ao realizar login." });
+  }
+});
 
 app.post('/deslogar', function(req, res) {
   res.cookie('token', null, {httpOnly: true});

@@ -1,5 +1,5 @@
 'use strict';
-const crypto = require('../servidor/crypto')
+const crypto = require('../crypto')
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('usuarios', [
