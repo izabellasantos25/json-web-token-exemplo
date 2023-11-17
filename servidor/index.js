@@ -3,6 +3,17 @@ require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');
 var { expressjwt: expressJWT } = require("express-jwt");
 const cors = require('cors');
+const corsOpcoes = {
+  //Cliente que fará o acesso
+  origin: "http://localhost:3000", 
+  //Metodos que o cliente pode executar
+  methods: "GET,PUT,POST,DELETE",
+
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true
+}
+
+
 const crypto = require('./crypto');
 
 var cookieParser = require('cookie-parser')
@@ -19,6 +30,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 app.use(express.static('public'));
+
+app.use(cors(corsOpcoes))
 
 app.use(cookieParser());
 app.use(
@@ -52,11 +65,14 @@ app.post('/logar', async function(req, res) {
         expiresIn: 3000
       });
 
-      res.cookie('token', token, { httpOnly: true });
-      return res.json({
-        usuario: user.nome,
-        token: token
+      res.cookie('token', token, { httpOnly: true }).json({
+        nome: user.nome,
+        token: token,
       });
+      /*return res.json({
+        usuario: user.nome, 
+        token: token
+      });*/
     }
   } catch (err) {
     console.error(err);
@@ -92,7 +108,7 @@ app.post('/usuarios/cadastrar', async function(req, res){
 app.get('/usuarios/listar', async function(req, res){
   try {
    var novousu = await usuario.findAll();
-   res.render('home', { novousu });
+   res.json( novousu );
  } catch (err) {
    console.error(err);
    res.status(500).json({ message: 'Ocorreu um erro ao buscar os usuário.' });
