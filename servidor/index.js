@@ -5,7 +5,7 @@ var { expressjwt: expressJWT } = require("express-jwt");
 const cors = require('cors');
 const corsOpcoes = {
   //Cliente que fará o acesso
-  origin: "http://localhost:3000", 
+  origin: "http://localhost:4000", 
   //Metodos que o cliente pode executar
   methods: "GET,PUT,POST,DELETE",
 
@@ -57,18 +57,20 @@ app.get('/', async function(req, res){
 
 app.post('/logar', async function(req, res) {
   try {
-    const { usuario: username, senha } = req.body;
-    const user = await usuario.findOne({ where: { nome: username } });
+    const { usuario: name, password } = req.body;
+    const user = await usuario.findOne({ where: { nome: name } });
 
-    if (user && crypto.decrypt(user.senha) === senha) {
+    if (user && crypto.decrypt(user.password) === password) {
       const token = jwt.sign({ id: user.id }, process.env.SECRET, {
         expiresIn: 3000
       });
 
       res.cookie('token', token, { httpOnly: true }).json({
-        nome: user.nome,
+        nome: user.name,
         token: token,
       });
+      return res.json(user);
+ 
       /*return res.json({
         usuario: user.nome, 
         token: token
@@ -115,6 +117,6 @@ app.get('/usuarios/listar', async function(req, res){
  }
  })
 
-app.listen(3000, function() {
-  console.log('App de Exemplo escutando na porta 3000!')
+app.listen(4000, function() {
+  console.log('App de Exemplo escutando na porta 4000!')
 });

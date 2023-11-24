@@ -32,7 +32,7 @@ export default function Login() {
   <h2>Login</h2>
   <form className={styles.form} onSubmit={handlerLogin}>
     <div className={styles.userbox}>
-      <input type="email" onChange={(e) => { setUser({ ...user, email: e.target.value }) }}/>
+      <input type="text" name="name" onChange={(e) => { setUser({ ...user, name: e.target.value }) }}/>
       <label>Username</label>
     </div>
     <div className={styles.userbox}>
