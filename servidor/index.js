@@ -25,13 +25,11 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
-app.use(cors(corsOpcoes))
+app.use(cors(corsOpcoes));
 
 app.use(cookieParser());
 app.use(
@@ -57,19 +55,19 @@ app.get('/', async function(req, res){
 
 app.post('/logar', async function(req, res) {
   try {
-    const { usuario: name, password } = req.body;
-    const user = await usuario.findOne({ where: { nome: name } });
+    const { nome, senha } = req.body;
+    const user = await usuario.findOne({ where: { nome: nome } });
 
-    if (user && crypto.decrypt(user.password) === password) {
+    if (user && crypto.decrypt(user.senha) === senha) {
       const token = jwt.sign({ id: user.id }, process.env.SECRET, {
         expiresIn: 3000
       });
 
-      res.cookie('token', token, { httpOnly: true }).json({
-        nome: user.name,
+      return res.cookie('token', token, { httpOnly: true }).json({
+        nome: user.nome,
         token: token,
       });
-      return res.json(user);
+     //return res.json(user);
  
       /*return res.json({
         usuario: user.nome, 
@@ -97,7 +95,7 @@ app.post('/usuarios/cadastrar', async function(req, res){
       nome: req.body.nome,
       senha: crypto.encrypt(req.body.senha)
     }
-    if(req.body.senha == req.body.senhadois){
+    if(req.body.senha == req.body.senha2){
      const novousu = await usuario.create(email);
       res.redirect('/usuarios/listar')
   } 

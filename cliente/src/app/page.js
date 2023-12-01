@@ -9,8 +9,8 @@ import styles from './styles.module.css';
 
 export default function Login() {
   const [user, setUser] = useState({
-    email: '',
-    password: '',
+    nome: '',
+    senha: '',
   });
   const { push, refresh } = useRouter();
 
@@ -32,11 +32,11 @@ export default function Login() {
   <h2>Login</h2>
   <form className={styles.form} onSubmit={handlerLogin}>
     <div className={styles.userbox}>
-      <input type="text" name="name" onChange={(e) => { setUser({ ...user, name: e.target.value }) }}/>
+      <input type="text" name="nome" onChange={(e) => { setUser({ ...user, nome: e.target.value }) }}/>
       <label>Username</label>
     </div>
     <div className={styles.userbox}>
-      <input type="password" onChange={(e) => { setUser({ ...user, password: e.target.value }) }}/>
+      <input type="password" name="senha" onChange={(e) => { setUser({ ...user, senha: e.target.value }) }}/>
       <label >Password</label>
     </div>
     <button>

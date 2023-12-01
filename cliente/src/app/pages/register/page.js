@@ -3,23 +3,22 @@ import { Suspense, useState } from "react";
 import styles from "../pages.module.css";
 import {ToastContainer, toast} from "react-toastify";
 import { postUser } from "@/app/functions/handlerAcessAPI";
-import handlerAcessUser from "@/app/functions/handlerAcess";
 import { useRouter } from "next/navigation";
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export default async function Register() {
+export default function Register() {
      const [user, setUser] = useState({
       nome: '',
-      email: '',
-      password: '',
+      senha: '',
+      senha2: '',
      });
      const { push } = useRouter();
 
-     const handlerFormSubmit = async (event) => {
-      event.preventDefault();
+     const handlerFormSubmit = (e) => {
+      e.preventDefault();
       try{
-        await postUser(user);
+        postUser(user);
         return push("/pages/dashboard");
       } catch {
         return toast.error("Erro");
@@ -29,25 +28,24 @@ export default async function Register() {
 
     return (
         <div className={styles.body}>
-            <Suspense fallback={<span className={styles.carregando}>Carregando...</span>}></Suspense>
 
     <div className={styles.loginbox}>
   <h2>Cadastro</h2>
-  <form className={styles.form} onSubmit={handlerAcessUser}>
+  <form className={styles.form} onSubmit={handlerFormSubmit}>
     <div className={styles.userbox}>
-      <input type="text" id="name"  onChange={(e) => { setUser({ ...user, name: e.target.value });}} 
+      <input type="text" id="name" name="nome"  onChange={(e) => { setUser({ ...user, nome: e.target.value });}} 
       required/>
       <label>Username</label>
     </div>
     <div className={styles.userbox}>
-      <input type="email" id="email" onChange={(e) => { setUser({ ...user, email: e.target.value });}} 
+      <input type="password" id="password" name="senha" onChange={(e) => { setUser({ ...user, senha: e.target.value });}} 
       required/>
-      <label>Email</label>
+      <label >senha</label>
     </div>
     <div className={styles.userbox}>
-      <input type="password" id="password" onChange={(e) => { setUser({ ...user, password: e.target.value });}} 
+      <input type="password" id="password2" name="senha2" onChange={(e) => { setUser({ ...user, senha2: e.target.value });}} 
       required/>
-      <label >Password</label>
+      <label >senha 2</label>
     </div>
     <button>
       <span></span>
