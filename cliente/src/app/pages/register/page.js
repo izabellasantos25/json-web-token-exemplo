@@ -5,6 +5,7 @@ import {ToastContainer, toast} from "react-toastify";
 import { postUser } from "@/app/functions/handlerAcessAPI";
 import { useRouter } from "next/navigation";
 import 'react-toastify/dist/ReactToastify.css';
+import Pag from "@/app/componentes/Pag";
 
 
 export default function Register() {
@@ -28,7 +29,7 @@ export default function Register() {
 
     return (
         <div className={styles.body}>
-
+        <Pag/>
     <div className={styles.loginbox}>
   <h2>Cadastro</h2>
   <form className={styles.form} onSubmit={handlerFormSubmit}>
