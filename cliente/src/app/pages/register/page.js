@@ -14,13 +14,13 @@ export default function Register() {
       senha: '',
       senha2: '',
      });
-     const { push } = useRouter();
+     const { push, refresh } = useRouter();
 
-     const handlerFormSubmit = (e) => {
+     const handlerFormSubmit = async (e) => {
       e.preventDefault();
-      try{
-        postUser(user);
-        return push("/pages/dashboard");
+      try {
+        await postUser(user);
+        push("/pages/dashboard");
       } catch {
         return toast.error("Erro");
       }

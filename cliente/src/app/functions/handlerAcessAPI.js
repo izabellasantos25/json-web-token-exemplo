@@ -8,7 +8,7 @@ const getUserAuthenticated = async (user) => {
   const responseOfApi = await fetch(url + "/logar", 
       {
         method: "POST",
-        headers:{ "Content-Type":"Application/json" },
+        headers:{ "Content-Type":'Application/json'  },
         body: JSON.stringify(user)
       }
   );
@@ -60,7 +60,7 @@ const updateUser = async (user, id) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'Application/json',
-        Cookie: `token=${token}`
+        Cookie: `token=${token}`,
       },
       body: JSON.stringify(user)
     });
