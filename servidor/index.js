@@ -67,12 +67,6 @@ app.post('/logar', async function(req, res) {
         nome: user.nome,
         token: token,
       });
-     //return res.json(user);
- 
-      /*return res.json({
-        usuario: user.nome, 
-        token: token
-      });*/
     }
   } catch (err) {
     console.error(err);

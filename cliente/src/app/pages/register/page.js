@@ -12,9 +12,9 @@ export default function Register() {
      const [user, setUser] = useState({
       nome: '',
       senha: '',
-      senha2: '',
+      senha2: ''
      });
-     const { push, refresh } = useRouter();
+     const { push } = useRouter();
 
      const handlerFormSubmit = async (e) => {
       e.preventDefault();
