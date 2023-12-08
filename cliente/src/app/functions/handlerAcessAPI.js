@@ -21,7 +21,7 @@ const getUsers = async () =>{
   const token = cookies().get("token")?.value
   try{
       const responseOfApi = await fetch(url + "/usuarios/listar",{
-          next: { revalidate: 10}, 
+          next: { revalidate: 5 }, 
           headers:{ 'Content-Type':'Application/json', 
           Cookie: `token=${token}`,
          },
